@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>SEO Meta Tag Analyzer for Shopify Stores | Shopify SEO Tool</title>
+    <meta name="description" content="Free Shopify SEO meta tag analyzer. Check and optimize your Shopify product meta titles & descriptions for better search rankings. Instant SEO checker for Shopify.">
+    <meta name="keywords" content="shopify seo tool, meta tag analyzer, shopify product seo, seo checker shopify, meta title checker, meta description analyzer">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://shopifyseotool.example.com/">
+    <meta property="og:title" content="SEO Meta Tag Analyzer for Shopify Stores">
+    <meta property="og:description" content="Free Shopify SEO meta tag analyzer. Check and optimize your Shopify product meta titles & descriptions.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SEO Meta Tag Analyzer for Shopify Stores">
+    <meta name="twitter:description" content="Free Shopify SEO meta tag analyzer. Check and optimize your Shopify product meta titles & descriptions.">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f7f9fc;
+            color: #1a1a2e;
+            line-height: 1.5;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            padding: 24px 20px 32px;
+            margin: 12px 0 20px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+            color: #0b3b5c;
+        }
+        .subhead {
+            font-size: 1rem;
+            color: #4a5568;
+            margin-bottom: 24px;
+            border-left: 4px solid #2b6c94;
+            padding-left: 14px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 14px 16px;
+            border: 2px solid #d1d9e6;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #fafcff;
+            resize: vertical;
+            transition: border 0.2s;
+        }
+        textarea:focus {
+            border-color: #2b6c94;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(43,108,148,0.15);
+        }
+        .btn {
+            background: #1e4a6b;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            width: 100%;
+            max-width: 320px;
+            margin: 8px auto 0;
+            display: block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .btn:hover {
+            background: #0f3b55;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .results {
+            margin-top: 28px;
+            border-top: 2px solid #e9edf2;
+            padding-top: 20px;
+        }
+        .result-card {
+            background: #f2f6fb;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            border-left: 6px solid #2b6c94;
+        }
+        .result-card.warning {
+            border-left-color: #d97706;
+            background: #fef9e7;
+        }
+        .result-card.good {
+            border-left-color: #0f7b3e;
+            background: #eafaf1;
+        }
+        .result-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            font-size: 0.75rem;
+            background: #1e4a6b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        .badge.warn {
+            background: #d97706;
+        }
+        .badge.good {
+            background: #0f7b3e;
+        }
+        .meta-preview {
+            background: white;
+            border: 1px solid #d1d9e6;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 12px 0 8px;
+            font-size: 0.95rem;
+        }
+        .meta-preview .title {
+            color: #1a0dab;
+            font-size: 1.1rem;
+            font-weight: 500;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .meta-preview .url {
+            color: #006621;
+            font-size: 0.85rem;
+            margin: 4px 0 2px;
+        }
+        .meta-preview .desc {
+            color: #545454;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .char-count {
+            font-size: 0.85rem;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+        .char-count span {
+            font-weight: 700;
+        }
+        .tip {
+            background: #eef2f7;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 16px 0 8px;
+            font-size: 0.9rem;
+            color: #1e293b;
+        }
+        .tip strong {
+            color: #0b3b5c;
+        }
+        .placeholder-ad {
+            background: #f0f4fa;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin: 28px 0 16px;
+            text-align: center;
+            border: 1px dashed #b0c4d9;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+        .placeholder-ad .ad-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7a8a9e;
+            margin-bottom: 6px;
+        }
+        .placeholder-ad .ad-content {
+            font-weight: 500;
+        }
+        .affiliate-section {
+            background: #eef3f9;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin: 24px 0 12px;
+        }
+        .affiliate-section h4 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #0b3b5c;
+        }
+        .affiliate-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .affiliate-section li {
+            padding: 6px 0;
+            border-bottom: 1px solid #dce3ec;
+        }
+        .affiliate-section li:last-child {
+            border-bottom: none;
+        }
+        .affiliate-section a {
+            color: #1e4a6b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .affiliate-section a:hover {
+            text-decoration: underline;
+        }
+        .privacy-note {
+            margin-top: 28px;
+            padding: 14px 16px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #3a4a5e;
+            text-align: center;
+            border: 1px solid #dce3ec;
+        }
+        .footer-meta {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: #6b7a8e;
+            text-align: center;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px 14px 24px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .btn {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Shopify Meta Tag Analyzer</h1>
+        <div class="subhead">Paste your product meta title & description — get instant SEO feedback</div>
+
+        <div class="input-group">
+            <label for="metaTitle">Meta Title (product title tag)</label>
+            <textarea id="metaTitle" placeholder="e.g. Organic Cotton T-Shirt | EcoWear Store" maxlength="300">Premium Bamboo Socks | Soft & Sustainable | EcoStep</textarea>
+        </div>
+        <div class="input-group">
+            <label for="metaDescription">Meta Description</label>
+            <textarea id="metaDescription" placeholder="e.g. Shop our organic cotton t-shirt..." maxlength="500">Experience ultimate comfort with EcoStep bamboo socks. Naturally breathable, moisture-wicking, and eco-friendly. Perfect for everyday wear. Free shipping on orders over $50.</textarea>
+        </div>
+
+        <button class="btn" id="analyzeBtn">Analyze Meta Tags</button>
+
+        <div id="resultsArea" class="results"></div>
+
+        <!-- Ad Placeholder -->
+        <div class="placeholder-ad">
+            <div class="ad-label">Sponsored</div>
+            <div class="ad-content">📈 <strong>Shopify SEO App</strong> — Optimize all product pages in one click. <a href="#" style="color:#1e4a6b;">Try free trial →</a></div>
+        </div>
+
+        <!-- Affiliate / Resource Section -->
+        <div class="affiliate-section">
+            <h4>📘 Shopify SEO Resources</h4>
+            <ul>
+                <li><a href="#">Ultimate Shopify SEO Checklist (2025)</a></li>
+                <li><a href="#">How to Write Product Meta Titles That Rank</a></li>
+                <li><a href="#">Best Shopify SEO Apps Compared</a></li>
+                <li><a href="#">Meta Description Best Practices for E‑commerce</a></li>
+            </ul>
+        </div>
+
+        <!-- Privacy Note -->
+        <div class="privacy-note">
+            🔒 Privacy: Events may be counted anonymously for product improvement. No personal data collected.
+        </div>
+        <div class="footer-meta">
+            shopify seo tool · meta tag analyzer · shopify product seo · seo checker shopify
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Report function (anonymous usage)
+            window.reportEvent = function(name, payload) {
+                if (window.ORGANISM_METRICS_ENDPOINT && typeof window.ORGANISM_METRICS_ENDPOINT === 'string') {
+                    try {
+                        fetch(window.ORGANISM_METRICS_ENDPOINT, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ event: name, payload: payload || {}, timestamp: Date.now() }),
+                            keepalive: true
+                        }).catch(function() {});
+                    } catch (e) {}
+                }
+            };
+
+            const titleInput = document.getElementById('metaTitle');
+            const descInput = document.getElementById('metaDescription');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const resultsDiv = document.getElementById('resultsArea');
+
+            function analyzeMeta(title, description) {
+                let results = [];
+                const titleLen = title.length;
+                const descLen = description.length;
+
+                // Title analysis
+                if (titleLen === 0) {
+                    results.push({ type: 'warning', label: 'Title', message: 'Meta title is empty. Add a unique product title.' });
+                } else {
+                    if (titleLen < 30) {
+                        results.push({ type: 'warning', label: 'Title length', message: `Title is only ${titleLen} characters. Aim for 50–60 characters for best visibility.` });
+                    } else if (titleLen > 60) {
+                        results.push({ type: 'warning', label: 'Title length', message: `Title is ${titleLen} characters. Google typically truncates after ~60 characters. Consider shortening.` });
+                    } else {
+                        results.push({ type: 'good', label: 'Title length', message: `✅ ${titleLen} characters — within the ideal 50–60 range.` });
+                    }
+                    // Check for brand or product keyword
+                    if (!/[A-Za-z]{4,}/.test(title)) {
+                        results.push({ type: 'warning', label: 'Title keywords', message: 'Title seems very short or generic. Include product name + key benefit.' });
+                    } else {
+                        results.push({ type: 'good', label: 'Title keywords', message: 'Title contains meaningful keywords.' });
+                    }
+                }
+
+                // Description analysis
+                if (descLen === 0) {
+                    results.push({ type: 'warning', label: 'Description', message: 'Meta description is missing. Always add a compelling description.' });
+                } else {
+                    if (descLen < 120) {
+                        results.push({ type: 'warning', label: 'Description length', message: `Only ${descLen} characters. Google typically uses 150–160 characters. Expand your description.` });
+                    } else if (descLen > 160) {
+                        results.push({ type: 'warning', label: 'Description length', message: `${descLen} characters — may be truncated. Try to keep it under 160 characters.` });
+                    } else {
+                        results.push({ type: 'good', label: 'Description length', message: `✅ ${descLen} characters — ideal length (150–160).` });
+                    }
+                    // Check for call to action or value
+                    const ctaWords = ['shop', 'buy', 'free', 'save', 'get', 'discover', 'find', 'order', 'try'];
+                    const hasCTA = ctaWords.some(word => description.toLowerCase().includes(word));
+                    if (!hasCTA) {
+                        results.push({ type: 'warning', label: 'Description CTA', message: 'Consider adding a call-to-action (e.g., "Shop now", "Free shipping") to improve click-through.' });
+                    } else {
+                        results.push({ type: 'good', label: 'Description CTA', message: 'Includes a persuasive call-to-action or value word.' });
+                    }
+                }
+
+                // Overall preview
+                let previewTitle = title.length > 60 ? title.slice(0, 57) + '...' : title;
+                let previewDesc = description.length > 160 ? description.slice(0, 157) + '...' : description;
+                let previewUrl = 'https://yourstore.com/products/example-product';
+
+                let html = `
+                    <div class="result-card">
+                        <h3>🔎 Google Search Preview <span class="badge">simulated</span></h3>
+                        <div class="meta-preview">
+                            <div class="title">${escapeHtml(previewTitle)}</div>
+                            <div class="url">${escapeHtml(previewUrl)}</div>
+                            <div class="desc">${escapeHtml(previewDesc)}</div>
+                        </div>
+                        <div class="char-count">Title: <span>${titleLen}</span> chars · Description: <span>${descLen}</span> chars</div>
+                    </div>
+                `;
+
+                results.forEach(r => {
+                    let cardClass = r.type === 'warning' ? 'result-card warning' : 'result-card good';
+                    let badgeClass = r.type === 'warning' ? 'badge warn' : 'badge good';
+                    let badgeText = r.type === 'warning' ? '⚠️ needs work' : '✅ good';
+                    html += `
+                        <div class="${cardClass}">
+                            <h3>${escapeHtml(r.label)} <span class="${badgeClass}">${badgeText}</span></h3>
+                            <p>${escapeHtml(r.message)}</p>
+                        </div>
+                    `;
+                });
+
+                // Tip box
+                html += `
+                    <div class="tip">
+                        <strong>💡 Tip:</strong> Include your primary keyword near the beginning of the title. Keep descriptions between 150–160 characters with a clear value proposition.
+                    </div>
+                `;
+
+                return html;
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                var div = document.createElement('div');
+                div.appendChild(document.createTextNode(text));
+                return div.innerHTML;
+            }
+
+            function runAnalysis() {
+                const title = titleInput.value.trim();
+                const description = descInput.value.trim();
+                const resultHtml = analyzeMeta(title, description);
+                resultsDiv.innerHTML = resultHtml;
+
+                // Report anonymous event
+                window.reportEvent('meta_analysis_run', {
+                    titleLength: title.length,
+                    descLength: description.length
+                });
+            }
+
+            analyzeBtn.addEventListener('click', runAnalysis);
+
+            // Run initial analysis on page load with placeholder data
+            window.addEventListener('DOMContentLoaded', function() {
+                runAnalysis();
+                // Report page view
+                window.reportEvent('page_view', { tool: 'shopify_meta_analyzer' });
+            });
+        })();
+    </script>
+</body>
+</html>
