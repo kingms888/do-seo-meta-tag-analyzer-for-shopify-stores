@@ -1,0 +1,1 @@
+# do-seo-meta-tag-analyzer-for-shopify-stores
